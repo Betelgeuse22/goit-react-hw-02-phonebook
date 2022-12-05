@@ -5,6 +5,8 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import Form from './Form/Form';
 import Contacts from './Contacts/Contacts';
 import Filter from './Filter/Filter';
+import { AppSection, TitelPhone, TitelContact } from './App.styled';
+import { GlobalStyle } from './GlobalStyle';
 
 class App extends React.Component {
   state = {
@@ -60,10 +62,11 @@ class App extends React.Component {
     const visibleContacts = this.getVisibleContacts();
 
     return (
-      <>
-        <h1>Phonebook</h1>
+      <AppSection>
+        <GlobalStyle />
+        <TitelPhone>Phonebook</TitelPhone>
         <Form onAddContact={this.addContact} />
-        <h2>Contacts</h2>
+        <TitelContact>Contacts</TitelContact>
         {visibleContacts.length > 1 && (
           <Filter
             value={this.state.filter}
@@ -76,7 +79,7 @@ class App extends React.Component {
             onRemoveContact={this.removeContact}
           />
         )}
-      </>
+      </AppSection>
     );
   }
 }
