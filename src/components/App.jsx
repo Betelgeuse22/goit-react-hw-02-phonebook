@@ -19,19 +19,17 @@ class App extends React.Component {
     filter: '',
   };
 
-  addContact = data => {
-    const searchSameName = this.state.contacts
-      .map(contact => contact.name)
-      .includes(data.name);
+  addContact = ({ name, number }) => {
+    const { contacts } = this.state;
+    const contact = { id: nanoid(), name, number };
 
-    if (searchSameName) {
-      Notify.failure(`${data.name} is already in contacts`);
+    if (
+      contacts.find(
+        contact => contact.name.toLocaleLowerCase() === name.toLocaleLowerCase()
+      )
+    ) {
+      Notify.failure(`${name} is already in contacts.`);
     } else {
-      const contact = {
-        ...data,
-        id: nanoid(),
-      };
-
       this.setState(prevState => ({
         contacts: [...prevState.contacts, contact],
       }));
@@ -67,17 +65,14 @@ class App extends React.Component {
         <TitelPhone>Phonebook</TitelPhone>
         <Form onAddContact={this.addContact} />
         <TitelContact>Contacts</TitelContact>
-        {visibleContacts.length > 1 && (
-          <Filter
-            value={this.state.filter}
-            onChangeFilter={this.changeFilter}
-          />
-        )}
-        {visibleContacts.length > 0 && (
+        <Filter value={this.state.filter} onChangeFilter={this.changeFilter} />
+        {visibleContacts.length > 0 ? (
           <Contacts
             contacts={visibleContacts}
             onRemoveContact={this.removeContact}
           />
+        ) : (
+          <TitelContact>This contact was not found</TitelContact>
         )}
       </AppSection>
     );
